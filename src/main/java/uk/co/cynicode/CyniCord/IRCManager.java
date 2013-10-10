@@ -42,24 +42,28 @@ public class IRCManager {
     	
         this.bot = new PircBotX();
 
-        CyniCord.printDebug( "1" );
         this.bot.getListenerManager().addListener(new IRCChatListener());
-        CyniCord.printDebug( "2" );
         this.bot.setName( nickname );
         this.bot.setLogin("CyniBot");
         try {
-        	CyniCord.printDebug( "3" );
             this.bot.connect( hostname, port );
-            CyniCord.printDebug( "4" );
             CyniCord.printInfo( "Connected " + nickname + " to IRC server: " + hostname );
-            CyniCord.printDebug( "5" );
+            this.bot.joinChannel( "#dev", "diamonds3" );
         } catch (Exception e) {
         	CyniCord.printSevere( "IRC connection has failed..." );
             throw e;
         }
-
     }
 
+    public void sendMessage( String channel, String player, String message ) {
+    	try {
+    		bot.sendMessage( channel, "[" + player + "] : " + message );
+    	} catch ( Exception e ) {
+    		CyniCord.printDebug( "Oops! Something went wrong!" );
+    		e.printStackTrace();
+    	}
+    }
+    
     /**
      * Restart the IRC component of the plugin via various means
      */

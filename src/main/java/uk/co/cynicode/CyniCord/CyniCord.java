@@ -4,6 +4,9 @@ import java.util.logging.Logger;
 
 import org.pircbotx.PircBotX;
 
+import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
+import uk.co.cynicode.CyniCord.DataGetters.JSONDataGetter;
+import uk.co.cynicode.CyniCord.DataGetters.MySQLDataGetter;
 import uk.co.cynicode.CyniCord.Listeners.PluginMessageListener;
 import uk.co.cynicode.CyniCord.IRCManager;
 
@@ -17,7 +20,13 @@ public class CyniCord extends ConfigurablePlugin {
 	
 	private static boolean debug = false;
 	
+	private static IDataGetter connection = null;
+	
 	public static IRCManager PBot = null;
+	
+	public static void sendMessage( String channel, String player, String message ) {
+		PBot.sendMessage( channel, player, message );
+	}
 	
 	@Override
 	public void onEnable() {
@@ -31,6 +40,14 @@ public class CyniCord extends ConfigurablePlugin {
 		} else {
 			printInfo( "Debugging disabled..." );
 		}
+		
+		if ( getConfig().getString( "CyniCord.other.storage" ).equalsIgnoreCase( "mysql" ) ) {
+			connection = new JSONDataGetter();
+		} else {
+			connection = new MySQLDataGetter();
+		}
+		
+		connection.startConnection( this );
 		
 		PircBotX boy = new PircBotX();
 		

@@ -3,5 +3,13 @@ CyniCord:
     hostname: "127.0.0.1"
     port: 6667
     nickname: "CyniBot"
+  database:
+    hostname: "localhost"
+    port: 3316
+    username: "root"
+    password: "password"
+    database: "cynichat"
+    prefix: "chat_"
   other:
+    storage: "json"
     debug: "false"
