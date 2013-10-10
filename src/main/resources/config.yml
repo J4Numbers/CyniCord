@@ -1,0 +1,7 @@
+CyniCord:
+  irc:
+    hostname: "127.0.0.1"
+    port: 6667
+    nickname: "CyniBot"
+  other:
+    debug: "false"

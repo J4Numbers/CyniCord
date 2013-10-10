@@ -1,0 +1,5 @@
+name: CyniCord
+main: uk.co.cynicode.CyniCord.CyniCord
+version: 0.0.1-SNAPSHOT
+author: CyniCode
+depends: ['BungeeYAML']
