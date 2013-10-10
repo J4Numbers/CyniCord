@@ -54,36 +54,34 @@
         <version>2.2</version>
       </extension>
     </extensions>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-shade-plugin</artifactId>
-          <version>1.5</version>
-          <executions>
-            <execution>
-              <phase>package</phase>
-              <goals>
-                <goal>shade</goal>
-              </goals>
-              <configuration>
-                <artifactSet>
-                  <includes>
-                    <include>org.pircbotx:pircbotx</include>
-                  </includes>
-                </artifactSet>
-                <relocations>
-                  <relocation>
-                    <pattern>org.pircbotx</pattern>
-                    <shadedPattern>uk.co.cynicode.CyniCord.lib.pircbotx</shadedPattern>
-                  </relocation>
-                </relocations>
-                <minimizeJar>false</minimizeJar>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <includes>
+                  <include>org.pircbotx:pircbotx</include>
+                </includes>
+              </artifactSet>
+              <relocations>
+                <relocation>
+                  <pattern>org.pircbotx</pattern>
+                  <shadedPattern>uk.co.cynicode.CyniCord.lib.pircbotx</shadedPattern>
+                </relocation>
+              </relocations>
+              <minimizeJar>true</minimizeJar>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 </project>
