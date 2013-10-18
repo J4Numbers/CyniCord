@@ -77,7 +77,8 @@ public class PluginMessageListener implements Listener {
 			CyniCord.printDebug( "Message sent..." );
 			
 		} catch ( IOException e ) {
-			ProxyServer.getInstance().getLogger().warning("[BungeeBan] PluginMessage error : Invalid date format");
+			CyniCord.printWarning("PluginMessage error...");
+			e.printStackTrace();
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}

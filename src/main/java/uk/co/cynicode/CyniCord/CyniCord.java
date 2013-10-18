@@ -1,5 +1,6 @@
 package uk.co.cynicode.CyniCord;
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,6 +15,7 @@ import uk.co.cynicode.CyniCord.IRCManager;
 import net.craftminecraft.bungee.bungeeyaml.pluginapi.ConfigurablePlugin;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.config.ServerInfo;
 
 public class CyniCord extends ConfigurablePlugin {
 	
@@ -24,6 +26,10 @@ public class CyniCord extends ConfigurablePlugin {
 	private static boolean debug = false;
 	
 	private static IDataGetter connection = null;
+	
+	public static ProxyServer proxy = null;
+	
+	public static Map<String, ServerInfo> servers = null;
 	
 	public static IRCManager PBot = null;
 	
@@ -59,7 +65,10 @@ public class CyniCord extends ConfigurablePlugin {
 			e.printStackTrace();
 		}
 		
-		ProxyServer.getInstance().getPluginManager().registerListener( this, new PluginMessageListener( this ) );
+		proxy = ProxyServer.getInstance();
+		proxy.getPluginManager().registerListener( this, new PluginMessageListener( this ) );
+		
+		servers = proxy.getServers();
 		
 		self = this;
 		
