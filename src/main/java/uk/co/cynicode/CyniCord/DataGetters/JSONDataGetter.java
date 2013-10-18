@@ -11,7 +11,7 @@ import uk.co.cynicode.CyniCord.CyniCord;
 
 public class JSONDataGetter implements IDataGetter {
 
-	public void startConnection(CyniCord plugin) {
+	public boolean startConnection(CyniCord plugin) {
 			try {
 				//Create message
 				ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -29,13 +29,22 @@ public class JSONDataGetter implements IDataGetter {
 				msg.writeShort(b.toByteArray().length);
 				msg.write(b.toByteArray());
 
-				p.sendPluginMessage(plugin, "BungeeCord", msgBytes.toByteArray());
+				//p.sendPluginMessage(plugin, "BungeeCord", msgBytes.toByteArray());
 				CyniCord.printDebug("Message sent!");
+				return true;
 			} catch (IOException ex) {
 				CyniCord.printSevere("Error sending message to BungeeChannelProxy");
 				ex.printStackTrace();
+				return false;
 			}
 		
+	}
+
+	/**
+	 * Always return true and simply dump all the items we have ahold of
+	 */
+	public boolean endConnection() {
+		return true;
 	}
 
 	public Map<String, String> getChannels() {
@@ -44,6 +53,11 @@ public class JSONDataGetter implements IDataGetter {
 	}
 
 	public Map<String, String> getIRCChannels() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Map<String, String> loadChannels() {
 		// TODO Auto-generated method stub
 		return null;
 	}

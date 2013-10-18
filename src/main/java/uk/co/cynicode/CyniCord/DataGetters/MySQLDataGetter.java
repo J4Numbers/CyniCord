@@ -2,7 +2,10 @@ package uk.co.cynicode.CyniCord.DataGetters;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -18,9 +21,13 @@ private int port = 0;
 private String username = "";
 private String password = "";
 
+private boolean SQL = false;
+
+private Map<String, String> loadedChannels = new HashMap<String, String>();
+
 private Connection conn;
 	
-	public void startConnection(CyniCord plugin) {
+	public boolean startConnection(CyniCord plugin) {
 		
 		this.hostname = plugin.getConfig().getString( "CyniCord.database.hostname" );
 		this.port = plugin.getConfig().getInt( "CyniCord.database.port" );
@@ -31,9 +38,11 @@ private Connection conn;
 		this.password = plugin.getConfig().getString( "CyniCord.database.password" );
 		
 		if ( connect() != true ) {
-			return;
+			return false;
 		}
 		
+		SQL = true;
+		return true;
 	}
 	
 	/**
@@ -58,14 +67,76 @@ private Connection conn;
 		return true;
 	}
 
+	public boolean endConnection() {
+		
+		if ( SQL == true ) {
+			try {
+				conn.close();
+			} catch ( SQLException e ) {
+				CyniCord.printSevere( "Something went wrong in shutting down the connection!" );
+				e.printStackTrace();
+			}
+		}
+		
+		return true;
+		
+	}
+	
+	/**
+	 * Generate a map of all the channels in the various tables
+	 * @return the map of all the channels along with their IRC channels
+	 */
 	public Map<String, String> getChannels() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, String> channels = new HashMap<String, String>();
+		try {
+			PreparedStatement ps = conn.prepareStatement("SELECT `channel_name`,`channel_irc_name`,`channel_irc_pass` FROM `"+prefix+"channels`");
+			ResultSet rs = ps.executeQuery();
+			while ( rs.next() ) {
+				String name = rs.getString(1);
+				String irc = rs.getString(2);
+				String ircPass = rs.getString(3);
+				
+				try {
+					loadedChannels.put( irc, ircPass );
+					channels.put( name.toLowerCase(), irc );
+				} catch (NullPointerException e) {
+					CyniCord.printSevere("Null Pointer found!");
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			CyniCord.printSevere("Channel loading has failed!");
+			e.printStackTrace();
+			CyniCord.killPlugin();
+		}
+		return channels;
 	}
 
 	public Map<String, String> getIRCChannels() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, String> channels = new HashMap<String, String>();
+		try {
+			PreparedStatement ps = conn.prepareStatement("SELECT `channel_name`,`channel_irc_name` FROM `"+prefix+"channels`");
+			ResultSet rs = ps.executeQuery();
+			while ( rs.next() ) {
+				String name = rs.getString(1);
+				String irc = rs.getString(2);
+				
+				try {
+					channels.put( irc, name.toLowerCase() );
+				} catch (NullPointerException e) {
+					CyniCord.printSevere("Null Pointer found!");
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			CyniCord.printSevere("Channel loading has failed!");
+			e.printStackTrace();
+			CyniCord.killPlugin();
+		}
+		return channels;
 	}
 
+	public Map<String, String> loadChannels() {
+		return loadedChannels;
+	}
 }

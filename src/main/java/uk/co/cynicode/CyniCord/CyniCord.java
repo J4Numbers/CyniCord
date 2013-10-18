@@ -1,5 +1,6 @@
 package uk.co.cynicode.CyniCord;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.pircbotx.PircBotX;
@@ -15,6 +16,8 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.ProxyServer;
 
 public class CyniCord extends ConfigurablePlugin {
+	
+	private static CyniCord self;
 	
 	private static Logger logger = null;
 	
@@ -47,24 +50,45 @@ public class CyniCord extends ConfigurablePlugin {
 			connection = new MySQLDataGetter();
 		}
 		
-		connection.startConnection( this );
-		
-		PircBotX boy = new PircBotX();
+		if ( connection.startConnection( this ) == false )
+			CyniCord.killPlugin();
 		
 		try {
-			PBot = new IRCManager( this );
+			PBot = new IRCManager( this, connection );
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 		
 		ProxyServer.getInstance().getPluginManager().registerListener( this, new PluginMessageListener( this ) );
+		
+		self = this;
+		
 		logger.warning( "CyniCord has been activated..." );
 	}
 	
 	public void onDisable() {
 		
+		connection.endConnection();
+		
+		printInfo( "Killing CyniCord..." );
+		
+		try {
+			self.killPlugin();
+		} catch ( Exception e ) {
+			printSevere( "Uh oh... something went bang" );
+			e.printStackTrace();
+		}
+		
+		printInfo( "CyniCord has been shut down" );
+		
 	}
 
+	public static void killPlugin() {
+		
+		self.onDisable();
+		
+	}
+	
 	public static void printInfo( String output ) {
 		logger.info( output );
 	}
@@ -79,6 +103,6 @@ public class CyniCord extends ConfigurablePlugin {
 	
 	public static void printDebug( String output ) {
 		if ( debug == true )
-			logger.info( "[DEBUG] " + output );
+			logger.log( Level.INFO, "[DEBUG] {0}", output);
 	}
 }

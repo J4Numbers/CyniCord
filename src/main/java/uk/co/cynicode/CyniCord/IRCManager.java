@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
 import uk.co.cynicode.CyniCord.Listeners.IRCChatListener;
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
@@ -32,7 +33,7 @@ public class IRCManager {
      * @param plugin : Used for getting the config options
      * @throws Exception : So much that could go wrong here...
      */
-    public IRCManager(CyniCord plugin) throws Exception {
+    public IRCManager(CyniCord plugin, IDataGetter connection ) throws Exception {
 
     	port = plugin.getConfig().getInt("CyniCord.irc.port");
     	hostname = plugin.getConfig().getString("CyniCord.irc.hostname");
@@ -41,14 +42,28 @@ public class IRCManager {
     	CyniCord.printDebug( nickname + "@" + hostname + ":" + port);
     	
         this.bot = new PircBotX();
-
+        
+        Map<String, String> channels = connection.loadChannels();
+        
         this.bot.getListenerManager().addListener(new IRCChatListener());
         this.bot.setName( nickname );
         this.bot.setLogin("CyniBot");
         try {
             this.bot.connect( hostname, port );
             CyniCord.printInfo( "Connected " + nickname + " to IRC server: " + hostname );
-            this.bot.joinChannel( "#dev", "diamonds3" );
+            
+            if ( channels != null ) {
+            	Set<String> names = channels.keySet();
+            	Iterator<String> iterNames = names.iterator();
+            	
+            	while ( iterNames.hasNext() ) {
+            		String thisChannel = iterNames.next();
+            		
+            		this.bot.joinChannel( thisChannel, channels.get(thisChannel) );
+            	}
+            	
+            }
+            
         } catch (Exception e) {
         	CyniCord.printSevere( "IRC connection has failed..." );
             throw e;
