@@ -83,7 +83,8 @@ public class CyniCord extends ConfigurablePlugin {
 		printInfo( "Killing CyniCord..." );
 		
 		try {
-			self.killPlugin();
+			PBot.stop();
+			//self.killPlugin();
 		} catch ( Exception e ) {
 			printSevere( "Uh oh... something went bang" );
 			e.printStackTrace();
