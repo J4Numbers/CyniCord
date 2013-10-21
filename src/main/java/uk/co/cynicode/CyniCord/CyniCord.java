@@ -25,7 +25,7 @@ public class CyniCord extends ConfigurablePlugin {
 	
 	private static boolean debug = false;
 	
-	private static IDataGetter connection = null;
+	//private static IDataGetter connection = null;
 	
 	public static ProxyServer proxy = null;
 	
@@ -50,17 +50,17 @@ public class CyniCord extends ConfigurablePlugin {
 			printInfo( "Debugging disabled..." );
 		}
 		
-		if ( getConfig().getString( "CyniCord.other.storage" ).equalsIgnoreCase( "mysql" ) ) {
-			connection = new MySQLDataGetter();
-		} else {
-			connection = new JSONDataGetter();
-		}
+		//if ( getConfig().getString( "CyniCord.other.storage" ).equalsIgnoreCase( "mysql" ) ) {
+		//	connection = new MySQLDataGetter();
+		//} else {
+		//	connection = new JSONDataGetter();
+		//}
 		
-		if ( connection.startConnection( this ) == false )
-			CyniCord.killPlugin();
+		//if ( connection.startConnection( this ) == false )
+		//	CyniCord.killPlugin();
 		
 		try {
-			PBot = new IRCManager( this, connection );
+			PBot = new IRCManager( this/*, connection*/ );
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
@@ -78,7 +78,7 @@ public class CyniCord extends ConfigurablePlugin {
 	@Override
 	public void onDisable() {
 		
-		connection.endConnection();
+		//connection.endConnection();
 		
 		printInfo( "Killing CyniCord..." );
 		

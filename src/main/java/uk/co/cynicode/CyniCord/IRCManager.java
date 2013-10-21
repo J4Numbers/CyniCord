@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
+//import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
 import uk.co.cynicode.CyniCord.Listeners.IRCChatListener;
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
@@ -26,6 +26,8 @@ public class IRCManager {
     private String hostname;
     private String nickname;
     private int port;
+    private Map<String, String> gameChannelNames;
+    private Map<String, String> ircChannelNames;
 
     /**
      * Constructor for making a new Bot out of barely anything
@@ -33,7 +35,7 @@ public class IRCManager {
      * @param plugin : Used for getting the config options
      * @throws Exception : So much that could go wrong here...
      */
-    public IRCManager(CyniCord plugin, IDataGetter connection ) throws Exception {
+    public IRCManager(CyniCord plugin/*, IDataGetter connection*/ ) throws Exception {
 
     	port = plugin.getConfig().getInt("CyniCord.irc.port");
     	hostname = plugin.getConfig().getString("CyniCord.irc.hostname");
@@ -43,7 +45,7 @@ public class IRCManager {
     	
         this.bot = new PircBotX();
         
-        Map<String, String> channels = connection.loadChannels();
+        //Map<String, String> channels = connection.loadChannels();
         
         this.bot.getListenerManager().addListener(new IRCChatListener());
         this.bot.setName( nickname );
@@ -55,7 +57,7 @@ public class IRCManager {
             this.bot.connect( hostname, port );
             CyniCord.printInfo( "Connected " + nickname + " to IRC server: " + hostname );
             
-            if ( channels != null ) {
+            /*if ( channels != null ) {
             	Set<String> names = channels.keySet();
             	Iterator<String> iterNames = names.iterator();
             	
@@ -65,13 +67,40 @@ public class IRCManager {
             		this.bot.joinChannel( thisChannel, channels.get(thisChannel) );
             	}
             	
-            }
+            }*/
             
         } catch (Exception e) {
         	CyniCord.printSevere( "IRC connection has failed..." );
             throw e;
         }
     }
+
+	public void addChannels( Map<String, String> channels, Map<String, String> ircChans ) {
+		
+		Set<String> keys = channels.keySet();
+		Iterator<String> iterKeys = keys.iterator();
+		
+		while ( iterKeys.hasNext() ) {
+			
+			String thisIrcChan = iterKeys.next();
+			String thisGameChan = channels.get( thisIrcChan );
+			String thisIrcPass = ircChans.get( thisIrcChan );
+			
+			if ( !this.ircChannelNames.containsValue(thisGameChan) ) {
+				this.ircChannelNames.put( thisIrcChan, thisGameChan);
+				this.gameChannelNames.put( thisGameChan, thisGameChan );
+			}
+			
+			try {
+				CyniCord.printDebug( "Attempting to connect to " + thisIrcChan + " with password: " + thisIrcPass );
+				this.bot.joinChannel( thisIrcChan, thisIrcPass );
+			} catch ( Exception e ) {
+				CyniCord.printSevere( "Failed to connect to the "+ thisIrcChan +" channel" );
+				e.printStackTrace();
+			}
+			
+		}
+	}
 
     public void sendMessage( String channel, String player, String message ) {
     	try {

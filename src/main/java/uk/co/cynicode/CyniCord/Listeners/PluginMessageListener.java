@@ -3,6 +3,8 @@ package uk.co.cynicode.CyniCord.Listeners;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import uk.co.cynicode.CyniCord.CyniCord;
 
@@ -26,7 +28,7 @@ public class PluginMessageListener implements Listener {
 			CyniCord.printDebug("Channel recieved : " + event.getTag());
 			
 			if (!event.getTag().equals("BungeeCord")) {
-				CyniCord.printWarning("IRC Listener was given message for channel " + event.getTag());
+				CyniCord.printWarning("Listener was given message for channel " + event.getTag());
 				return;
 			}
 			
@@ -41,7 +43,7 @@ public class PluginMessageListener implements Listener {
 			CyniCord.printDebug( direct );
 			CyniCord.printDebug( subChannel );
 			
-			if(!subChannel.equals("CyniChat")){return;/*Not our problem*/}
+			if( !subChannel.equals("CyniChat") && !subChannel.equals( "CyniCord" ) ){return;/*Not our problem*/}
 			
 			CyniCord.printDebug( "Next stage" );
 			
@@ -56,25 +58,49 @@ public class PluginMessageListener implements Listener {
 			
 			CyniCord.printDebug( "Input streams created..." );
 			
-			String one = dis.readUTF();
-			String two = dis.readUTF();
-			
-			//EndpointType type = EndpointType.values()[dis.readInt()];
-			String fancyPlayerName = dis.readUTF();
-			String playerName = dis.readUTF();
-			String chatChannel = dis.readUTF();
-			String message = dis.readUTF();
-
-			CyniCord.printDebug( "Details read..." );
-			
-			CyniCord.printDebug( "Fancy name : " + fancyPlayerName );
-			CyniCord.printDebug( "Player name : " + playerName );
-			CyniCord.printDebug( "Channel name : " + chatChannel );
-			CyniCord.printDebug( "Message : " + message );
-			
-			CyniCord.sendMessage( chatChannel, playerName, message );
-			
-			CyniCord.printDebug( "Message sent..." );
+			if ( subChannel.equals( "CyniChat" ) ) {
+				
+				CyniCord.printDebug( "CyniChat" );
+				String one = dis.readUTF();
+				String two = dis.readUTF();
+				
+				//EndpointType type = EndpointType.values()[dis.readInt()];
+				String fancyPlayerName = dis.readUTF();
+				String playerName = dis.readUTF();
+				String chatChannel = dis.readUTF();
+				String message = dis.readUTF();
+				
+				CyniCord.printDebug( "Details read..." );
+				
+				CyniCord.printDebug( "Fancy name : " + fancyPlayerName );
+				CyniCord.printDebug( "Player name : " + playerName );
+				CyniCord.printDebug( "Channel name : " + chatChannel );
+				CyniCord.printDebug( "Message : " + message );
+				
+				CyniCord.sendMessage( chatChannel, playerName, message );
+				
+				CyniCord.printDebug( "Message sent..." );
+				
+			} else {
+				
+				CyniCord.printDebug( "CyniCord" );
+				
+				Map<String, String> ircToGameChans = new HashMap<String, String>();
+				Map<String, String> ircChanAndPass = new HashMap<String, String>();
+				
+				while ( !dis.readUTF().equals( "END" ) ) {
+					String info = dis.readUTF();
+					
+					String[] thisChan = info.split("~|~");
+					
+					ircToGameChans.put( thisChan[1], thisChan[0] );
+					ircChanAndPass.put( thisChan[1], thisChan[2] );
+					
+				}
+				
+				CyniCord.PBot.addChannels( ircToGameChans, ircChanAndPass);
+				
+			}
 			
 		} catch ( IOException e ) {
 			CyniCord.printWarning("PluginMessage error...");

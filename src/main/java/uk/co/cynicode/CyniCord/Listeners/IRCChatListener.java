@@ -142,31 +142,33 @@ public class IRCChatListener extends ListenerAdapter {
 			String thisKey = iterKeys.next();
 			ServerInfo thisServer = CyniCord.servers.get( thisKey );
 			
-			try {
-				//Create message
-				ByteArrayOutputStream b = new ByteArrayOutputStream();
-				DataOutputStream out = new DataOutputStream(b);
-				out.writeUTF("");
-				out.writeUTF( event.getUser().getNick() );
-				out.writeUTF( ircChannelName );
-				out.writeUTF( event.getMessage() );
+			if ( thisServer.getPlayers().size() > 0 ) {
 				
-				ByteArrayOutputStream msgBytes = new ByteArrayOutputStream();
-				DataOutputStream msg = new DataOutputStream(msgBytes);
-				msg.writeUTF("Forward");
-				msg.writeUTF("ALL");
-				msg.writeUTF("CyniChat");
-				//Push message content
-				msg.writeShort(b.toByteArray().length);
-				msg.write(b.toByteArray());
-				
-				thisServer.sendData( "BungeeCord", msgBytes.toByteArray() );
-				
-			} catch (IOException ex) {
-				CyniCord.printSevere("Error sending message to BungeeChannelProxy");
-				ex.printStackTrace();
+				try {
+					//Create message
+					ByteArrayOutputStream b = new ByteArrayOutputStream();
+					DataOutputStream out = new DataOutputStream(b);
+					out.writeUTF("");
+					out.writeUTF( event.getUser().getNick() );
+					out.writeUTF( ircChannelName );
+					out.writeUTF( event.getMessage() );
+					
+					ByteArrayOutputStream msgBytes = new ByteArrayOutputStream();
+					DataOutputStream msg = new DataOutputStream(msgBytes);
+					msg.writeUTF("Forward");
+					msg.writeUTF("ALL");
+					msg.writeUTF("CyniChat");
+					//Push message content
+					msg.writeShort(b.toByteArray().length);
+					msg.write(b.toByteArray());
+					
+					thisServer.sendData( "BungeeCord", msgBytes.toByteArray() );
+					
+				} catch (IOException ex) {
+					CyniCord.printSevere("Error sending message to BungeeChannelProxy");
+					ex.printStackTrace();
+				}
 			}
-			
 		}
 		
 	}
