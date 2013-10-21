@@ -51,9 +51,9 @@ public class CyniCord extends ConfigurablePlugin {
 		}
 		
 		if ( getConfig().getString( "CyniCord.other.storage" ).equalsIgnoreCase( "mysql" ) ) {
-			connection = new JSONDataGetter();
-		} else {
 			connection = new MySQLDataGetter();
+		} else {
+			connection = new JSONDataGetter();
 		}
 		
 		if ( connection.startConnection( this ) == false )
@@ -75,6 +75,7 @@ public class CyniCord extends ConfigurablePlugin {
 		logger.warning( "CyniCord has been activated..." );
 	}
 	
+	@Override
 	public void onDisable() {
 		
 		connection.endConnection();

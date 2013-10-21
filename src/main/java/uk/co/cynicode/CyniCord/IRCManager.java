@@ -48,6 +48,9 @@ public class IRCManager {
         this.bot.getListenerManager().addListener(new IRCChatListener());
         this.bot.setName( nickname );
         this.bot.setLogin("CyniBot");
+	
+	CyniCord.printDebug( "Trying to connect " + nickname + " to " + hostname + ":" + port );
+	
         try {
             this.bot.connect( hostname, port );
             CyniCord.printInfo( "Connected " + nickname + " to IRC server: " + hostname );
