@@ -25,7 +25,7 @@ public class PluginMessageListener implements Listener {
 	@EventHandler
 	public void onPluginEvent( PluginMessageEvent event ) {
 		try {
-			CyniCord.printDebug("Channel recieved : " + event.getTag());
+			CyniCord.printDebug("Channel received : " + event.getTag());
 			
 			if (!event.getTag().equals("BungeeCord")) {
 				CyniCord.printWarning("Listener was given message for channel " + event.getTag());
