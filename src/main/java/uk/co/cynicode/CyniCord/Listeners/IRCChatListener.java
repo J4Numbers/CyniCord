@@ -26,7 +26,10 @@ public class IRCChatListener extends ListenerAdapter {
 	 * Listen for all the chatter that is going on on the IRC bot's end so that
 	 * any commands given there are going to be executed while commands given
 	 * from inside MC will be left alone.
+	 * @param event : The message event we're going to examine
+	 * @throws Exception
 	*/
+	@Override
 	public void onMessage(MessageEvent event) throws Exception {
 		if (event.getMessage().startsWith(":?")) {
 			String[] argments = event.getMessage().split(" ");
