@@ -75,6 +75,14 @@ public class IRCManager {
         }
     }
 
+	public boolean channelJoined( String channel ) {
+		return bot.channelExists( channel );
+	}
+
+	public void joinChannel( String name, String pass ) {
+		bot.joinChannel( name, pass );
+	}
+
 	public void addChannels( Map<String, String> channels, Map<String, String> ircChans ) {
 		
 		Set<String> keys = channels.keySet();

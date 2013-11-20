@@ -33,7 +33,10 @@ public class CyniCord extends ConfigurablePlugin {
 	
 	public static IRCManager PBot = null;
 	
-	public static void sendMessage( String channel, String player, String message ) {
+	public static void sendMessage( String channel, String password, String player, String message ) {
+		if ( PBot.channelJoined(channel) == false )
+			PBot.joinChannel( channel, password );
+		
 		PBot.sendMessage( channel, player, message );
 	}
 	

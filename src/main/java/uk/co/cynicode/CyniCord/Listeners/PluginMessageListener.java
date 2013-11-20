@@ -68,6 +68,8 @@ public class PluginMessageListener implements Listener {
 				String fancyPlayerName = dis.readUTF();
 				String playerName = dis.readUTF();
 				String chatChannel = dis.readUTF();
+				String IRCName = dis.readUTF();
+				String IRCPass = dis.readUTF();
 				String message = dis.readUTF();
 				
 				CyniCord.printDebug( "Details read..." );
@@ -75,9 +77,11 @@ public class PluginMessageListener implements Listener {
 				CyniCord.printDebug( "Fancy name : " + fancyPlayerName );
 				CyniCord.printDebug( "Player name : " + playerName );
 				CyniCord.printDebug( "Channel name : " + chatChannel );
+				CyniCord.printDebug( "IRC Chan Name : " + IRCName );
+				CyniCord.printDebug( "IRC Pass Name : " + IRCPass );
 				CyniCord.printDebug( "Message : " + message );
 				
-				CyniCord.sendMessage( chatChannel, playerName, message );
+				CyniCord.sendMessage( IRCName, IRCPass, playerName, message );
 				
 				CyniCord.printDebug( "Message sent..." );
 				
@@ -108,7 +112,6 @@ public class PluginMessageListener implements Listener {
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		return;
 	}
 	
 }
