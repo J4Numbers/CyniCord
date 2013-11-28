@@ -156,16 +156,22 @@ public class IRCChatListener extends ListenerAdapter {
 					out.writeUTF( ircChannelName );
 					out.writeUTF( event.getMessage() );
 					
+					CyniCord.printDebug( out.toString() );
+					CyniCord.printDebug( b.toString() );
+					
 					ByteArrayOutputStream msgBytes = new ByteArrayOutputStream();
 					DataOutputStream msg = new DataOutputStream(msgBytes);
 					msg.writeUTF("Forward");
 					msg.writeUTF("ALL");
-					msg.writeUTF("CyniChat");
+					msg.writeUTF("CyniCord");
 					//Push message content
 					msg.writeShort(b.toByteArray().length);
 					msg.write(b.toByteArray());
 					
+					CyniCord.printDebug( msg.toString() );
+					
 					thisServer.sendData( "BungeeCord", msgBytes.toByteArray() );
+					CyniCord.printDebug( "Sent message to " + thisKey );
 					
 				} catch (IOException ex) {
 					CyniCord.printSevere("Error sending message to BungeeChannelProxy");
