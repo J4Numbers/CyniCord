@@ -161,8 +161,8 @@ public class IRCChatListener extends ListenerAdapter {
 					
 					ByteArrayOutputStream msgBytes = new ByteArrayOutputStream();
 					DataOutputStream msg = new DataOutputStream(msgBytes);
-					msg.writeUTF("Forward");
-					msg.writeUTF("ALL");
+					//msg.writeUTF("Forward");
+					//msg.writeUTF("ALL");
 					msg.writeUTF("CyniCord");
 					//Push message content
 					msg.writeShort(b.toByteArray().length);
