@@ -152,7 +152,7 @@ public class IRCChatListener extends ListenerAdapter {
 					ByteArrayOutputStream b = new ByteArrayOutputStream();
 					DataOutputStream out = new DataOutputStream(b);
 					out.writeUTF("");
-					out.writeUTF( event.getUser().getNick() );
+					out.writeUTF( CyniCord.ircPrefix + event.getUser().getNick() );
 					out.writeUTF( ircChannelName );
 					out.writeUTF( event.getMessage() );
 					

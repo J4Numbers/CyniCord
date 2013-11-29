@@ -20,6 +20,8 @@ public class CyniCord extends ConfigurablePlugin {
 	
 	//private static IDataGetter connection = null;
 	
+	public static String ircPrefix;
+	
 	public static ProxyServer proxy = null;
 	
 	public static Map<String, ServerInfo> servers = null;
@@ -45,6 +47,8 @@ public class CyniCord extends ConfigurablePlugin {
 		} else {
 			printInfo( "Debugging disabled..." );
 		}
+		
+		ircPrefix = getConfig().getString( "CyniCord.other.ircPrefix" );
 		
 		//if ( getConfig().getString( "CyniCord.other.storage" ).equalsIgnoreCase( "mysql" ) ) {
 		//	connection = new MySQLDataGetter();
