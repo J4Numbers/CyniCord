@@ -16,7 +16,7 @@ import net.md_5.bungee.event.EventHandler;
 
 public class PluginMessageListener implements Listener {
 	
-	private CyniCord plugin;
+	private final CyniCord plugin;
 	
 	public PluginMessageListener( CyniCord plugin ) {
 		this.plugin = plugin;

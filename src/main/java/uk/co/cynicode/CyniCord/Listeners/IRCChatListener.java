@@ -199,7 +199,6 @@ public class IRCChatListener extends ListenerAdapter {
 					}*/
 				}
 				
-				return;
 			}
 			
 			// ircResponses.helpOutput(event.getBot(), event.getUser());

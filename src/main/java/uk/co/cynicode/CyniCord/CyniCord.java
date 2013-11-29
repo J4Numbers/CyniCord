@@ -4,16 +4,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.pircbotx.PircBotX;
-
-import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
-import uk.co.cynicode.CyniCord.DataGetters.JSONDataGetter;
-import uk.co.cynicode.CyniCord.DataGetters.MySQLDataGetter;
 import uk.co.cynicode.CyniCord.Listeners.PluginMessageListener;
-import uk.co.cynicode.CyniCord.IRCManager;
 
 import net.craftminecraft.bungee.bungeeyaml.pluginapi.ConfigurablePlugin;
-import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 
@@ -21,7 +14,7 @@ public class CyniCord extends ConfigurablePlugin {
 	
 	private static CyniCord self;
 	
-	private static Logger logger = null;
+	private static Logger logger;
 	
 	private static boolean debug = false;
 	
@@ -43,7 +36,7 @@ public class CyniCord extends ConfigurablePlugin {
 	@Override
 	public void onEnable() {
 		
-		this.logger = getLogger();
+		CyniCord.logger = getLogger();
 		this.saveDefaultConfig();
 		
 		if ( getConfig().getString( "CyniCord.other.debug" ).equalsIgnoreCase( "true" ) ) {
