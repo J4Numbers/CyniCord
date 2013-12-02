@@ -7,6 +7,7 @@ import java.util.Set;
 
 //import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
 import uk.co.cynicode.CyniCord.Listeners.IRCChatListener;
+
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
@@ -111,7 +112,7 @@ public class IRCManager {
 
 	public void sendMessage( String channel, String player, String message ) {
 		try {
-			bot.sendMessage( channel, "[" + player + "] : " + message );
+			bot.sendMessage( channel, player + " : " + message );
 		} catch ( Exception e ) {
 			CyniCord.printDebug( "Oops! Something went wrong!" );
 			e.printStackTrace();
