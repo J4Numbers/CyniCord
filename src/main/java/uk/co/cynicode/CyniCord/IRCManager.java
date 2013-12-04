@@ -1,14 +1,11 @@
 package uk.co.cynicode.CyniCord;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 //import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
 import uk.co.cynicode.CyniCord.Listeners.IRCChatListener;
 
-import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.exception.NickAlreadyInUseException;
