@@ -10,14 +10,36 @@ import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
+/**
+ * A class responsible for listening out for plugin messages
+ * and acting upon them as it sees fit.
+ * @author Cynical
+ */
 public class PluginMessageListener implements Listener {
 	
+	/**
+	 * The instance of CyniCord that we need in order to 
+	 * access some of its methods... at some point in the
+	 * potential future.
+	 */
 	private final CyniCord plugin;
 	
+	/**
+	 * Constructor of the class in which we declare the plugin
+	 * variable and assign it for potential later usage.
+	 * @param plugin : Not used quite yet
+	 */
 	public PluginMessageListener( CyniCord plugin ) {
 		this.plugin = plugin;
 	}
 	
+	/**
+	 * On every plugin event, a flag gets sent up here and we
+	 * take a listen to whatever it says. If it's good news, 
+	 * we celebrate by passing it onto the IRC client we have
+	 * here.
+	 * @param event : The Plugin Message Event that we're grabbing
+	 */
 	@EventHandler
 	public void onPluginEvent( PluginMessageEvent event ) {
 		try {
