@@ -1,5 +1,6 @@
 .settings
-target
+/target/
+/CyniCord/
 .classpath
 .project
-libs
+/libs/
