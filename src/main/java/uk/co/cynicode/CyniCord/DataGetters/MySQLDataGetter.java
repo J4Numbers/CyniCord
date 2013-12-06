@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -199,6 +198,8 @@ public class MySQLDataGetter implements IDataGetter {
 	 */
 	public final void findAllChannels() throws Exception {
 		
+		//Make some dummy maps to hold all the information we find in
+		// this check of the database.
 		Map<String, String> loadMap = new HashMap<String, String>();
 		Map<String, String> cyniMap = new HashMap<String, String>();
 		Map<String, String>  ircMap = new HashMap<String, String>();
@@ -262,12 +263,21 @@ public class MySQLDataGetter implements IDataGetter {
 			
 		}
 		
+		//Now completely overwrite the old values with these
+		// new ones that we've loaded in now
 		setLoadedChannels( loadMap );
 		setCyniChannels(   cyniMap );
 		setIrcChannels(    ircMap  );
 		
 	}
 	
+	/**
+	 * Because interfacing gets screwy with having a subclass which
+	 * implements Runnable, we might as well just have a middle-method
+	 * which does all the work for us... it just gets us a new instance
+	 * of the class in any case.
+	 * @return the new instance of the Runnable class
+	 */
 	public Runnable returnBooster() {
 		return new boostConnection();
 	}
