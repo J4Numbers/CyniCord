@@ -19,6 +19,8 @@ public interface IDataGetter {
 	 */
 	//public boolean startConnection( CyniCord plugin );
 	
+	public Runnable returnBooster();
+	
 	/**
 	 * Kill the connection to whatever we're using
 	 */

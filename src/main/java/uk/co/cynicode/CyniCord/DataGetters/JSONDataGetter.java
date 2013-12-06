@@ -3,6 +3,7 @@ package uk.co.cynicode.CyniCord.DataGetters;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -21,6 +22,23 @@ import uk.co.cynicode.CyniCord.CyniCord;
 public class JSONDataGetter implements IDataGetter {
 	
 	/**
+	 * The item which contains the mapping of the irc channels
+	 * and their corresponding passwords
+	 */
+	private Map<String, String> loadedChannels = new HashMap<String, String>();
+	
+	/**
+	 * These are all the channels that are on the servers that are
+	 * mapped onto the irc channels
+	 */
+	private Map<String, String> cyniChannels = new HashMap<String, String>();
+	
+	/**
+	 * This is the cyniChannel mapping, but reversed
+	 */
+	private Map<String, String> ircChannels = new HashMap<String, String>();
+	
+	/**
 	 * A constructor for the class that will deal with sending out feelers
 	 * for all the asked data. This basically means that it sends out a 
 	 * pulse to the other servers asking for information... whether or not
@@ -31,7 +49,7 @@ public class JSONDataGetter implements IDataGetter {
 	 */
 	//public boolean startConnection(CyniCord plugin) {
 	public JSONDataGetter( CyniCord plugin ) throws IOException {
-		try {
+		/**try {
 			//Create message
 			ByteArrayOutputStream b = new ByteArrayOutputStream();
 			DataOutputStream out = new DataOutputStream(b);
@@ -56,7 +74,7 @@ public class JSONDataGetter implements IDataGetter {
 			CyniCord.printSevere("Error sending message to BungeeChannelProxy");
 			throw ex;
 			
-		}
+		}*/
 		
 	}
 	
@@ -64,22 +82,60 @@ public class JSONDataGetter implements IDataGetter {
 	 * Always return true and simply dump all the items we have ahold of
 	 */
 	public void endConnection() {
-		return;
+		
 	}
 	
+	/**
+	 * Unimplemented method to get all the channels available
+	 */
 	public void findAllChannels() {
-		// TODO Auto-generated method stub
-		return;
+		
 	}
 	
+	/**
+	 * @return the ircChannels
+	 */
 	public Map<String, String> getIrcChannels() {
-		// TODO Auto-generated method stub
+		return ircChannels;
+	}
+	
+	/**
+	 * @param ircChannels the ircChannels to set
+	 */
+	public void setIrcChannels( Map<String, String> ircChannels ) {
+		this.ircChannels = ircChannels;
+	}
+	
+	/**
+	 * @return the cyniChannels
+	 */
+	public Map<String, String> getCyniChannels() {
+		return cyniChannels;
+	}
+	
+	/**
+	 * @param cyniChannels the cyniChannels to set
+	 */
+	public void setCyniChannels( Map<String, String> cyniChannels ) {
+		this.cyniChannels = cyniChannels;
+	}
+	
+	public Runnable returnBooster() {
 		return null;
 	}
 	
+	/**
+	 * @return the loadedChannels
+	 */
 	public Map<String, String> getLoadedChannels() {
-		// TODO Auto-generated method stub
-		return null;
+		return loadedChannels;
+	}
+	
+	/**
+	 * @param loadedChannels the loadedChannels to set
+	 */
+	public void setLoadedChannels( Map<String, String> loadedChannels ) {
+		this.loadedChannels = loadedChannels;
 	}
 	
 }

@@ -3,14 +3,17 @@ package uk.co.cynicode.CyniCord;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-
-import uk.co.cynicode.CyniCord.Listeners.PluginMessageListener;
 
 import net.craftminecraft.bungee.bungeeyaml.pluginapi.ConfigurablePlugin;
 
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.scheduler.ScheduledTask;
+
+import uk.co.cynicode.CyniCord.Listeners.PluginMessageListener;
+
 import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
 import uk.co.cynicode.CyniCord.DataGetters.JSONDataGetter;
 import uk.co.cynicode.CyniCord.DataGetters.MySQLDataGetter;
@@ -36,6 +39,11 @@ public class CyniCord extends ConfigurablePlugin {
 	 * This just asks if we're showing debug or not
 	 */
 	private static boolean debug = false;
+	
+	/**
+	 * Thing for MySQL boosting
+	 */
+	private ScheduledTask runner;
 	
 	/**
 	 * This thing is the connection thingy we're using for things
@@ -107,6 +115,10 @@ public class CyniCord extends ConfigurablePlugin {
 		try {
 			if ( getConfig().getString( "CyniCord.other.storage" ).equalsIgnoreCase( "mysql" ) ) {
 				connection = new MySQLDataGetter( this );
+				runner = this.getProxy().getScheduler()
+					.schedule(this, 
+						connection.returnBooster(), 
+						5L, TimeUnit.MINUTES );
 			} else {
 				connection = new JSONDataGetter( this );
 			}

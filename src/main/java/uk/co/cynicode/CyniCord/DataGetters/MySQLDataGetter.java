@@ -259,6 +259,21 @@ public class MySQLDataGetter implements IDataGetter {
 		
 	}
 	
+	public Runnable returnBooster() {
+		return new boostConnection();
+	}
+	
+	/**
+	 * A class for boosting the database connection
+	 */
+	public class boostConnection implements Runnable {
+		
+		public void run() {
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
+		
+	};
+	
 	/**
 	 * @return the hostname
 	 */
