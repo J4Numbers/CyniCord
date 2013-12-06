@@ -73,14 +73,22 @@ public class CyniCord extends ConfigurablePlugin {
 		
 		ircPrefix = getConfig().getString( "CyniCord.other.ircPrefix" );
 		
-		//if ( getConfig().getString( "CyniCord.other.storage" ).equalsIgnoreCase( "mysql" ) ) {
-		//	connection = new MySQLDataGetter();
-		//} else {
-		//	connection = new JSONDataGetter();
+		//try {
+		//	if ( getConfig().getString( "CyniCord.other.storage" ).equalsIgnoreCase( "mysql" ) ) {
+		//		connection = new MySQLDataGetter( this );
+		//	} else {
+		//		connection = new JSONDataGetter( this );
+		//	}
+		//} catch ( SQLException e ) {
+		//	killPlugin();
+		//} catch ( IOException ex ) {
+		//	killPlugin();
+		//} catch ( Exception exe ) {
+		//	killPlugin();
 		//}
-		
+		//
 		//if ( connection.startConnection( this ) == false )
-		//	CyniCord.killPlugin();
+		//	killPlugin();
 		
 		//And try to initialise the IRC bot, otherwise this thing is
 		// a pointless plugin.

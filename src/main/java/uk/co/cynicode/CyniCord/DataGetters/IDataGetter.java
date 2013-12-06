@@ -17,30 +17,28 @@ public interface IDataGetter {
 	 *  for something or another
 	 * @return whether it has connected or not
 	 */
-	public boolean startConnection( CyniCord plugin );
+	//public boolean startConnection( CyniCord plugin );
 	
 	/**
 	 * Kill the connection to whatever we're using
-	 * @return whether the method is dead or not
 	 */
-	public boolean endConnection();
+	public void endConnection();
 	
 	/**
 	 * Get a set of all the channels that are available
-	 * @return Map< IRC Channel Name, Minecraft Channel Name >
 	 */
-	public Map<String, String> getChannels();
+	public void findAllChannels() throws Exception;
 	
 	/**
 	 * Get all the IRC information about the channels
 	 * @return Map< IRC Channel Name, IRC Chanel Password >
 	 */
-	public Map<String, String> getIRCChannels();
+	public Map<String, String> getIrcChannels();
 	
 	/**
 	 * Get all the loaded channels
 	 * @return the loaded channels
 	 */
-	public Map<String, String> loadChannels();
+	public Map<String, String> getLoadedChannels();
 	
 }
