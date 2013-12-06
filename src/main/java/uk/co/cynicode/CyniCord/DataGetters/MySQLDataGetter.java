@@ -277,15 +277,29 @@ public class MySQLDataGetter implements IDataGetter {
 	 */
 	public class boostConnection implements Runnable {
 		
+		/**
+		 * A running thing to run the codes
+		 */
 		public void run() {
 			try {
 				
+				//Now, do another run on getting all the channels
+				// from the database which should have been
+				// flushed by the CyniChat plugin
 				findAllChannels();
+				
+				//Once we've done that, compare all the old channels
+				// with the new ones that we've just found.
 				CyniCord.PBot
 					.compareChannels( getLoadedChannels() );
 				
+				//Then let the server know that we did things
+				CyniCord.printInfo( "Updated the IRC bot with "
+					+ "the latest information.");
+				
 			} catch ( Exception e ) {
 				
+				//Well shit... kill everything.
 				CyniCord.printSevere( e.getMessage() );
 				endConnection();
 				CyniCord.killPlugin();
