@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -198,6 +199,10 @@ public class MySQLDataGetter implements IDataGetter {
 	 */
 	public final void findAllChannels() throws Exception {
 		
+		Map<String, String> loadMap = new HashMap<String, String>();
+		Map<String, String> cyniMap = new HashMap<String, String>();
+		Map<String, String>  ircMap = new HashMap<String, String>();
+		
 		//Then try and create a new statement
 		try {
 			
@@ -228,14 +233,14 @@ public class MySQLDataGetter implements IDataGetter {
 					
 					//First, we want them in all the channels
 					// that we have listed as activated...
-					getLoadedChannels().put( irc, ircPass );
+					loadMap.put( irc, ircPass );
 					
 					//Then we want to put them into the map
 					// for all those which have connections
-					getCyniChannels().put( name.toLowerCase(), irc );
+					cyniMap.put( name.toLowerCase(), irc );
 					
 					//Then we want to reverse that map we just made
-					getIrcChannels().put( irc, name.toLowerCase() );
+					ircMap.put( irc, name.toLowerCase() );
 					
 				} catch (NullPointerException e) {
 					
@@ -257,6 +262,10 @@ public class MySQLDataGetter implements IDataGetter {
 			
 		}
 		
+		setLoadedChannels( loadMap );
+		setCyniChannels(   cyniMap );
+		setIrcChannels(    ircMap  );
+		
 	}
 	
 	public Runnable returnBooster() {
@@ -269,7 +278,19 @@ public class MySQLDataGetter implements IDataGetter {
 	public class boostConnection implements Runnable {
 		
 		public void run() {
-			throw new UnsupportedOperationException("Not supported yet.");
+			try {
+				
+				findAllChannels();
+				CyniCord.PBot
+					.compareChannels( getLoadedChannels() );
+				
+			} catch ( Exception e ) {
+				
+				CyniCord.printSevere( e.getMessage() );
+				endConnection();
+				CyniCord.killPlugin();
+				
+			}
 		}
 		
 	};

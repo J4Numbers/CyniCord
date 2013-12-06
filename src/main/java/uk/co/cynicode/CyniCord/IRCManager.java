@@ -1,15 +1,15 @@
 package uk.co.cynicode.CyniCord;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-//import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
 import uk.co.cynicode.CyniCord.Listeners.IRCChatListener;
+import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.exception.NickAlreadyInUseException;
-import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
 
 /**
  * An instantiation of a PircBotX bot
@@ -95,6 +95,51 @@ public class IRCManager {
 	}
 	
 	/**
+	 * Check our current joined channels against a new list of channels
+	 * that we should be joined to. Then act on it.
+	 * @param channels : A map of IRC channels and their keys
+	 */
+	public void compareChannels( Map<String, String> channels ) {
+		
+		//Firstly, let's get all the channels we're currently joined
+		// to with this bot.
+		List<String> currentChannels = (List<String>) getIrcChannelNames().keySet();
+		
+		//Then let's get a list of all the channels that are
+		// in the map we've been handed
+		List<String> currentNewChannels = (List<String>) channels.keySet();
+		
+		//Let's just make sure that there are channels to be added to
+		if ( currentChannels.isEmpty() && currentNewChannels.isEmpty() )
+			return;
+		
+		//Now... for every potentially new channel...
+		for ( String thisChan : currentNewChannels )
+			
+			//If we're already joined to it...
+			if ( currentChannels.contains( thisChan ) ) {
+				
+				//Then strike it from both records
+				currentChannels.remove( thisChan );
+				channels.remove( thisChan );
+				
+			}
+		
+		//Now, every record in this list is a channel that is
+		// no-longer in the records, meaning that it's not 
+		// needed anymore. Leave all such channels
+		for ( String thisChan : currentChannels ) 
+			leaveChannel( thisChan );
+		
+		//The opposite is true for the new channels. These are
+		// now channels that are not in our list of joined 
+		// channels yet. Rectify that by joining them.
+		for ( Map.Entry<String, String> thisChan : channels.entrySet() )
+			joinChannel( thisChan.getKey(), thisChan.getValue() );
+		
+	}
+	
+	/**
 	 * Ask if we are joined to this given channel.
 	 * @param channel : The channel we are giving
 	 * @return true or false
@@ -109,49 +154,26 @@ public class IRCManager {
 	 * @param pass : With this password
 	 */
 	public void joinChannel( String name, String pass ) {
+		getIrcChannelNames().put( name, pass );
 		getBot().joinChannel( name, pass );
 	}
 	
 	/**
-	 * Given a map of channels, join to all of them
-	 * @param channels : The channels we wish to join to
-	 * @param ircChans : The channels and their passwords
+	 * Method used for leaving a channel as long as we're initially
+	 * connected to said channel.
+	 * @param name : the name of the channel we're leaving
 	 */
-	public void addChannels( Map<String, String> channels, Map<String, String> ircChans ) {
+	public void leaveChannel( String name ) {
 		
-		//Go through the channels
-		for ( Map.Entry<String, String> thisSet : channels.entrySet() ) {
+		//Let's first make sure that we're in the channel
+		if ( getBot().channelExists( name ) ) {
 			
-			//And retrieve all the pertinent data
-			String thisIrcChan = thisSet.getKey();
-			String thisGameChan = thisSet.getValue();
-			String thisIrcPass = ircChans.get( thisIrcChan );
+			//Now that we've made sure of that, leave it
+			getBot().partChannel( getBot().getChannel( name ) );
 			
-			//Then ask if we already have the channels in the 
-			// maps of the class. If we do, move on. Otherwise
-			// we add them into the current lists.
-			if ( !getIrcChannelNames().containsValue(thisGameChan) ) {
-				getIrcChannelNames().put( thisIrcChan, thisGameChan);
-				getIrcChannelNames().put( thisGameChan, thisGameChan );
-			}
-			
-			//Now actually join the channels
-			try {
-				
-				//like so
-				CyniCord.printDebug( "Attempting to connect to " + thisIrcChan + " with password: " + thisIrcPass );
-				getBot().joinChannel( thisIrcChan, thisIrcPass );
-				
-			} catch ( Exception e ) {
-				
-				//Or not...
-				CyniCord.printSevere( "Failed to connect to the "+ thisIrcChan +" channel" );
-				e.printStackTrace();
-				
-			}
+			getIrcChannelNames().remove( name );
 			
 		}
-		
 	}
 	
 	/**
