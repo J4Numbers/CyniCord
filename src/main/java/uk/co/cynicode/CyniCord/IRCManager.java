@@ -9,6 +9,7 @@ import uk.co.cynicode.CyniCord.Listeners.IRCChatListener;
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.exception.NickAlreadyInUseException;
+import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
 
 /**
  * An instantiation of a PircBotX bot
@@ -30,9 +31,10 @@ public class IRCManager {
 	 * Constructor for making a new Bot out of barely anything
 	 *
 	 * @param plugin : Used for getting the config options
+	 * @param connection : Used for connecting to all the channels
 	 * @throws Exception : So much that could go wrong here...
 	 */
-	public IRCManager(CyniCord plugin/*, IDataGetter connection*/ ) throws Exception {
+	public IRCManager(CyniCord plugin, IDataGetter connection ) throws Exception {
 		
 		//Get the information about the IRC server we're going to
 		// connect to
@@ -46,7 +48,7 @@ public class IRCManager {
 		//Make a new bot
 		this.bot = new PircBotX();
 		
-		//Map<String, String> channels = connection.loadChannels();
+		Map<String, String> channels = connection.getLoadedChannels();
 		
 		//And then register the thing that will enable two-way chatter
 		this.bot.getListenerManager().addListener(new IRCChatListener());
@@ -70,19 +72,23 @@ public class IRCManager {
 			//Huh... that was easy
 			CyniCord.printInfo( "Connected " + this.nickname + " to IRC server: " + this.hostname );
 			
-			/*if ( channels != null ) {
-				Set<String> names = channels.keySet();
-				Iterator<String> iterNames = names.iterator();
+			//Let's just see if the map is empty or not first.
+			if ( !channels.isEmpty() ) {
 				
-				while ( iterNames.hasNext() ) {
-					String thisChannel = iterNames.next();
+				//For every channel there is in the map...
+				for ( Map.Entry<String, String> thisChan : channels.entrySet() ) {
+					
+					//Lock the channel in and join it
+					this.bot.joinChannel( thisChan.getKey(), thisChan.getValue() );
+					
+				}
 				
-				this.bot.joinChannel( thisChannel, channels.get(thisChannel) );
 			}
 			
-		}*/
-		
-		} catch (Exception e) {
+		} catch (IOException e) {
+			CyniCord.printSevere( "IRC connection has failed..." );
+			throw e;
+		} catch (IrcException e) {
 			CyniCord.printSevere( "IRC connection has failed..." );
 			throw e;
 		}
@@ -242,10 +248,24 @@ public class IRCManager {
 	}
 	
 	/**
+	 * @param bot the bot to set
+	 */
+	public void setBot( PircBotX bot ) {
+		this.bot = bot;
+	}
+	
+	/**
 	 * @return The map of IRC channels
 	 */
 	public Map<String,String> getIrcChannelNames() {
 		return this.ircChannelNames;
+	}
+	
+	/**
+	 * @param ircChannelNames the ircChannelNames to set
+	 */
+	public void setIrcChannelNames( Map<String, String> ircChannelNames ) {
+		this.ircChannelNames = ircChannelNames;
 	}
 	
 	/**

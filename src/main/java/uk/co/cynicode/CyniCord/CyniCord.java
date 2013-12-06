@@ -1,5 +1,7 @@
 package uk.co.cynicode.CyniCord;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -9,6 +11,9 @@ import net.craftminecraft.bungee.bungeeyaml.pluginapi.ConfigurablePlugin;
 
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
+import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
+import uk.co.cynicode.CyniCord.DataGetters.JSONDataGetter;
+import uk.co.cynicode.CyniCord.DataGetters.MySQLDataGetter;
 
 /**
  * A plugin for interfacing with Bungee, CyniChat and IRC
@@ -16,20 +21,45 @@ import net.md_5.bungee.api.config.ServerInfo;
  */
 public class CyniCord extends ConfigurablePlugin {
 	
+	/**
+	 * This is an instance of the plugin kept around in case of emergencies
+	 */
 	private static CyniCord self;
 	
+	/**
+	 * This is an instance of the logger which is only accessible through
+	 * three methods in this class which print the varying levels
+	 */
 	private static Logger logger;
 	
+	/**
+	 * This just asks if we're showing debug or not
+	 */
 	private static boolean debug = false;
 	
-	//private static IDataGetter connection = null;
+	/**
+	 * This thing is the connection thingy we're using for things
+	 */
+	private static IDataGetter connection = null;
 	
+	/**
+	 * This is the IRC prefix for people on IRC talking to those in-game
+	 */
 	public static String ircPrefix;
 	
+	/**
+	 * A proxy server instance
+	 */
 	public static ProxyServer proxy = null;
 	
+	/**
+	 * A list of all the servers we're connected to
+	 */
 	public static Map<String, ServerInfo> servers = null;
 	
+	/**
+	 * The instance of the IRC bot we need to do all the IRC things
+	 */
 	public static IRCManager PBot = null;
 	
 	/**
@@ -58,7 +88,7 @@ public class CyniCord extends ConfigurablePlugin {
 	public void onEnable() {
 		
 		//Get the logger so we can log stuff amazingly enough
-		CyniCord.logger = getLogger();
+		logger = getLogger();
 		
 		//Then do config bullshit
 		this.saveDefaultConfig();
@@ -73,27 +103,32 @@ public class CyniCord extends ConfigurablePlugin {
 		
 		ircPrefix = getConfig().getString( "CyniCord.other.ircPrefix" );
 		
-		//try {
-		//	if ( getConfig().getString( "CyniCord.other.storage" ).equalsIgnoreCase( "mysql" ) ) {
-		//		connection = new MySQLDataGetter( this );
-		//	} else {
-		//		connection = new JSONDataGetter( this );
-		//	}
-		//} catch ( SQLException e ) {
-		//	killPlugin();
-		//} catch ( IOException ex ) {
-		//	killPlugin();
-		//} catch ( Exception exe ) {
-		//	killPlugin();
-		//}
-		//
-		//if ( connection.startConnection( this ) == false )
-		//	killPlugin();
+		//Get what method of data storage we're using
+		try {
+			if ( getConfig().getString( "CyniCord.other.storage" ).equalsIgnoreCase( "mysql" ) ) {
+				connection = new MySQLDataGetter( this );
+			} else {
+				connection = new JSONDataGetter( this );
+			}
+			
+		} catch ( SQLException e ) {
+			//Bang!
+			//Ow!
+			killPlugin();
+		} catch ( IOException ex ) {
+			//Splat!
+			//Oof!
+			killPlugin();
+		} catch ( Exception exe ) {
+			//Um... thud?
+			//Thud.
+			killPlugin();
+		}
 		
 		//And try to initialise the IRC bot, otherwise this thing is
 		// a pointless plugin.
 		try {
-			PBot = new IRCManager( this/*, connection*/ );
+			PBot = new IRCManager( this, connection );
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}

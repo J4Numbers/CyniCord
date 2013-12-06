@@ -90,9 +90,8 @@ public class MySQLDataGetter implements IDataGetter {
 	private Connection conn;
 	
 	/**
-	 * This class takes the place of a constructor... or an impromptu 
-	 * one in any case. It gets all the data from the configs and sets
-	 * up all of the connections we need in order to get information  
+	 * This constructor gets all the data from the configs and sets 
+	 * up all of the connections we need in order to get information
 	 * from the database.
 	 * @param plugin : An instance of the plugin so we can grab the 
 	 *  config informations
@@ -117,9 +116,15 @@ public class MySQLDataGetter implements IDataGetter {
 			findAllChannels();
 			
 		} catch ( SQLException e ) {
+			
+			//Something in the connect method went wonky
 			throw e;
+			
 		} catch ( Exception ex ) {
+			
+			//Something in the findAllChannels method went wonky
 			throw ex;
+			
 		}
 		
 		//And since we've got this far, tell the class that we have 

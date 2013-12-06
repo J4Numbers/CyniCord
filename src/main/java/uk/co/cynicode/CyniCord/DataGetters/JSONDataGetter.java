@@ -63,21 +63,21 @@ public class JSONDataGetter implements IDataGetter {
 	/**
 	 * Always return true and simply dump all the items we have ahold of
 	 */
-	public boolean endConnection() {
-		return true;
+	public void endConnection() {
+		return;
 	}
 	
-	public Map<String, String> getChannels() {
+	public void findAllChannels() {
+		// TODO Auto-generated method stub
+		return;
+	}
+	
+	public Map<String, String> getIrcChannels() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public Map<String, String> getIRCChannels() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public Map<String, String> loadChannels() {
+	public Map<String, String> getLoadedChannels() {
 		// TODO Auto-generated method stub
 		return null;
 	}

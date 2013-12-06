@@ -26,6 +26,8 @@ public interface IDataGetter {
 	
 	/**
 	 * Get a set of all the channels that are available
+	 * @throws Exception if an error up if something went wrong 
+	 *  in finding something
 	 */
 	public void findAllChannels() throws Exception;
 	
