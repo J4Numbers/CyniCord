@@ -1,7 +1,5 @@
 package uk.co.cynicode.CyniCord.DataGetters;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,34 +45,7 @@ public class JSONDataGetter implements IDataGetter {
 	 *  configs
 	 * @throws IOException if the PluginMessage goes awry
 	 */
-	//public boolean startConnection(CyniCord plugin) {
 	public JSONDataGetter( CyniCord plugin ) throws IOException {
-		/**try {
-			//Create message
-			ByteArrayOutputStream b = new ByteArrayOutputStream();
-			DataOutputStream out = new DataOutputStream(b);
-			
-			out.writeUTF( "CyniCord" );
-			out.writeUTF( "channelReq" );
-			
-			ByteArrayOutputStream msgBytes = new ByteArrayOutputStream();
-			DataOutputStream msg = new DataOutputStream(msgBytes);
-			msg.writeUTF("Forward");
-			msg.writeUTF("ALL");
-			msg.writeUTF("CyniChat");
-			//Push message content
-			msg.writeShort(b.toByteArray().length);
-			msg.write(b.toByteArray());
-			
-			//p.sendPluginMessage(plugin, "BungeeCord", msgBytes.toByteArray());
-			CyniCord.printDebug("Message sent!");
-			
-		} catch (IOException ex) {
-			
-			CyniCord.printSevere("Error sending message to BungeeChannelProxy");
-			throw ex;
-			
-		}*/
 		
 	}
 	

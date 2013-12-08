@@ -23,36 +23,36 @@ public class MySQLDataGetter implements IDataGetter {
 	 * The String responsible for holding the hostname of the database
 	 * that we're connecting to.
 	 */
-	private String hostname = "";
+	private String hostname;
 	
 	/**
 	 * The string responsible for the actual database that we're
 	 * using to gather information about all our goodies.
 	 */
-	private String database = "";
+	private String database;
 	
 	/**
 	 * The string we're using to tell us what prefix all our tables
 	 * have. That way we can check whether they exist or not.
 	 */
-	private String prefix = "";
+	private String prefix;
 	
 	/**
 	 * What port is our database on?
 	 */
-	private int port = 0;
+	private int port;
 	
 	
 	
 	/**
 	 * What username is the database allocated to?
 	 */
-	private String username = "";
+	private String username;
 	
 	/**
 	 * And what password does that username have?
 	 */
-	private String password = "";
+	private String password;
 	
 	
 	
