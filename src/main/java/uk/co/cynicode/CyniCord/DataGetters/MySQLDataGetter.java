@@ -110,11 +110,12 @@ public class MySQLDataGetter implements IDataGetter {
 	 * This constructor gets all the data from the configs and sets 
 	 * up all of the connections we need in order to get information
 	 * from the database.
+	 * 
 	 * @param plugin : An instance of the plugin so we can grab the 
 	 *  config informations
 	 * @throws SQLException if the connection was unsuccessful
+	 * @throws Exception if something else went wrong
 	 */
-	//public boolean startConnection(CyniCord plugin) {
 	public MySQLDataGetter( CyniCord plugin ) throws SQLException, Exception {
 		
 		//Set all the variables according to the configs

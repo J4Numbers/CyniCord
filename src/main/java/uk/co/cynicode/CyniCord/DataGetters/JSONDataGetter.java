@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-
 import uk.co.cynicode.CyniCord.CyniCord;
 
 /**

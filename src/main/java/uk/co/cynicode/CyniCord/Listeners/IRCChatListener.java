@@ -19,9 +19,7 @@ package uk.co.cynicode.CyniCord.Listeners;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import net.md_5.bungee.api.config.ServerInfo;
 

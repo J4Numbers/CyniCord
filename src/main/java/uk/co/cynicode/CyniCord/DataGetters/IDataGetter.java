@@ -18,8 +18,6 @@ package uk.co.cynicode.CyniCord.DataGetters;
 
 import java.util.Map;
 
-import uk.co.cynicode.CyniCord.CyniCord;
-
 /**
  * An interface for all possible methods of getting the data about
  * IRC channels
@@ -29,13 +27,12 @@ import uk.co.cynicode.CyniCord.CyniCord;
 public interface IDataGetter {
 	
 	/**
-	 * Start up the connection to whichever method you need
-	 * @param plugin : The instance of the plugin that might be used
-	 *  for something or another
-	 * @return whether it has connected or not
+	 * Get the booster that is going to boost the connection every
+	 * so often.
+	 * 
+	 * @return a runnable instance that is going to boost the
+	 *  connection; whatever that may be.
 	 */
-	//public boolean startConnection( CyniCord plugin );
-	
 	public Runnable returnBooster();
 	
 	/**
