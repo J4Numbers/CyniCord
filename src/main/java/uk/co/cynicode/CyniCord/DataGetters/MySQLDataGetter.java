@@ -153,7 +153,7 @@ public class MySQLDataGetter implements IDataGetter {
 	
 	/**
 	 * Actually connect to the database with the information we've been given
-     *
+	 *
 	 * @throws SQLException if the database connection was unsuccessful
 	 */
 	private void connect() throws SQLException {

@@ -40,8 +40,8 @@ public class IRCManager {
 	private String nickname;
 	private int port;
 
-    private String adminChan;
-    private String adminPass;
+	private String adminChan;
+	private String adminPass;
 
 	private Map<String, String> gameChannelNames;
 	private Map<String, String> ircChannelNames;
@@ -61,8 +61,8 @@ public class IRCManager {
 		this.hostname = plugin.getConfig().getString("CyniCord.irc.hostname");
 		this.nickname = plugin.getConfig().getString("CyniCord.irc.nickname");
 
-        this.adminChan = plugin.getConfig().getString( "CyniCord.irc.admin_channel" );
-        this.adminPass = plugin.getConfig().getString( "CyniCord.irc.admin_password" );
+		this.setAdminChan(plugin.getConfig().getString( "CyniCord.irc.admin_channel" ));
+		this.setAdminPass(plugin.getConfig().getString( "CyniCord.irc.admin_password" ));
 
 		//Print out the information as some nice debug bits
 		CyniCord.printDebug( this.nickname + "@" + this.hostname + ":" + this.port);
@@ -94,7 +94,7 @@ public class IRCManager {
 			//Huh... that was easy
 			CyniCord.printInfo( "Connected " + this.nickname + " to IRC server: " + this.hostname );
 
-            this.bot.joinChannel( this.adminChan, this.adminPass );
+			this.bot.joinChannel(this.getAdminChan(), this.getAdminPass());
 
 			//Let's just see if the map is empty or not first.
 			if ( !channels.isEmpty() ) {
@@ -362,5 +362,32 @@ public class IRCManager {
 	public Map<String, String> getGameChannelNames() {
 		return gameChannelNames;
 	}
-	
+
+	/**
+	 * @return the admin channel that has been set
+	 */
+	public String getAdminChan() {
+		return adminChan;
+	}
+
+	/**
+	 * @param adminChan the admin channel to set
+	 */
+	public void setAdminChan(String adminChan) {
+		this.adminChan = adminChan;
+	}
+
+	/**
+	 * @return the admin channel password that has been set
+	 */
+	public String getAdminPass() {
+		return adminPass;
+	}
+
+	/**
+	 * @param adminPass the admin password to set
+	 */
+	public void setAdminPass(String adminPass) {
+		this.adminPass = adminPass;
+	}
 }
