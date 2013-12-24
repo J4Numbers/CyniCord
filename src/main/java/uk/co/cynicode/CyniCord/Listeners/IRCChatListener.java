@@ -102,7 +102,7 @@ public class IrcChatListener extends ListenerAdapter {
 					// check.
 					CyniCord.printDebug("Or you don't....");
 					CyniCord.printDebug(event.getUser().getNick() + " : " + thisChan.getName());
-					// ircResponses.listOutput(event.getUser(), event.getBot(), thisChan.getName(), false);
+					IrcResponses.listOutput(event.getUser(), event.getBot(), thisChan.getName(), false);
 					return;
 					
 				}
