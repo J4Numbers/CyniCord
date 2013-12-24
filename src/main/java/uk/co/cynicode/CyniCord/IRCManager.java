@@ -39,6 +39,10 @@ public class IRCManager {
 	private String hostname;
 	private String nickname;
 	private int port;
+
+    private String adminChan;
+    private String adminPass;
+
 	private Map<String, String> gameChannelNames;
 	private Map<String, String> ircChannelNames;
 	
@@ -56,7 +60,10 @@ public class IRCManager {
 		this.port = plugin.getConfig().getInt("CyniCord.irc.port");
 		this.hostname = plugin.getConfig().getString("CyniCord.irc.hostname");
 		this.nickname = plugin.getConfig().getString("CyniCord.irc.nickname");
-		
+
+        this.adminChan = plugin.getConfig().getString( "CyniCord.irc.admin_channel" );
+        this.adminPass = plugin.getConfig().getString( "CyniCord.irc.admin_password" );
+
 		//Print out the information as some nice debug bits
 		CyniCord.printDebug( this.nickname + "@" + this.hostname + ":" + this.port);
 		
@@ -86,7 +93,9 @@ public class IRCManager {
 			
 			//Huh... that was easy
 			CyniCord.printInfo( "Connected " + this.nickname + " to IRC server: " + this.hostname );
-			
+
+            this.bot.joinChannel( this.adminChan, this.adminPass );
+
 			//Let's just see if the map is empty or not first.
 			if ( !channels.isEmpty() ) {
 				
