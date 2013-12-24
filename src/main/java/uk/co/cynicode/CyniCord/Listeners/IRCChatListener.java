@@ -28,13 +28,14 @@ import uk.co.cynicode.CyniCord.CyniCord;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
+import uk.co.cynicode.CyniCord.Responses.IrcResponses;
 
 /**
  * Deal with all the output that the bot can see
  *
  * @author CyniCode
  */
-public class IRCChatListener extends ListenerAdapter {
+public class IrcChatListener extends ListenerAdapter {
 
 	/**
 	 * Listen for all the chatter that is going on on the IRC bot's end so that
@@ -61,7 +62,7 @@ public class IRCChatListener extends ListenerAdapter {
 				
 				//So we do the nice thing and help them
 				CyniCord.printDebug("Default used...");
-				//    ircResponses.helpOutput(event.getBot(), event.getUser());
+				IrcResponses.helpOutput(event.getBot(), event.getUser());
 				return;
 				
 			}
@@ -71,7 +72,7 @@ public class IRCChatListener extends ListenerAdapter {
 				
 				//So we do the same
 				CyniCord.printDebug("Help selected...");
-				//    ircResponses.helpOutput(event.getBot(), event.getUser());
+				IrcResponses.helpOutput(event.getBot(), event.getUser());
 				return;
 				
 			}
@@ -90,7 +91,7 @@ public class IRCChatListener extends ListenerAdapter {
 						//The example of all being used here
 						CyniCord.printDebug("You've either got 'all' as parameter...");
 						CyniCord.printDebug(event.getUser().getNick() + " : " + thisChan.getName());
-						//ircResponses.listOutput(event.getUser(), event.getBot(), thisChan.getName(), true);
+						IrcResponses.listOutput(event.getUser(), event.getBot(), thisChan.getName(), true);
 						return;
 						
 					}
@@ -121,7 +122,7 @@ public class IRCChatListener extends ListenerAdapter {
 				
 				if (argments[2] != null) {
 					//Kick a person
-					// ircResponses.kickOutput(event.getUser(), event.getBot(), argments[2], thisChan.getName());
+					IrcResponses.kickOutput(event.getUser(), event.getBot(), argments[2], thisChan.getName());
 					return;
 				}
 				
@@ -145,10 +146,10 @@ public class IRCChatListener extends ListenerAdapter {
 					// And if it's not a ban that we're 
 					// checking
 					if (argments[1].equalsIgnoreCase("ban")) {
-						// ircResponses.banOutput(event.getUser(), event.getBot(), argments[2], event.getChannel().getName(), false);
+						IrcResponses.banOutput(event.getUser(), event.getBot(), argments[2], event.getChannel().getName(), false);
 					} else {
 						//Then it must be an unban
-						// ircResponses.banOutput(event.getUser(), event.getBot(), argments[2], event.getChannel().getName(), true);
+						IrcResponses.banOutput(event.getUser(), event.getBot(), argments[2], event.getChannel().getName(), true);
 					}
 					
 					return;
@@ -172,9 +173,9 @@ public class IRCChatListener extends ListenerAdapter {
 				if (argments[2] != null) {
 					
 					if (argments[1].equalsIgnoreCase("mute")) {
-						// ircResponses.muteOutput(event.getUser(), event.getBot(), argments[2], thisChan.getName(), false);
+						IrcResponses.muteOutput(event.getUser(), event.getBot(), argments[2], thisChan.getName(), false);
 					} else {
-						// ircResponses.muteOutput(event.getUser(), event.getBot(), argments[2], thisChan.getName(), true);
+						IrcResponses.muteOutput(event.getUser(), event.getBot(), argments[2], thisChan.getName(), true);
 					}
 					return;
 					
@@ -187,7 +188,8 @@ public class IRCChatListener extends ListenerAdapter {
 			
 			//Restart the CyniCord bot
 			if (argments[1].equalsIgnoreCase("restart")
-					&& thisChan.isOp(event.getUser())) {
+					&& thisChan.isOp( event.getUser() )
+					&& thisChan.getName().equalsIgnoreCase( CyniCord.PBot.getAdminChan() )) {
 				
 				//The person must be an op to restart
 				// the IRC bot
@@ -199,7 +201,8 @@ public class IRCChatListener extends ListenerAdapter {
 			
 			//Kill the bot dead.
 			if (argments[1].equalsIgnoreCase("kill")
-					&& thisChan.isOp(event.getUser())) {
+					&& thisChan.isOp(event.getUser())
+					&& thisChan.getName().equalsIgnoreCase( CyniCord.PBot.getAdminChan() )) {
 				
 				//Unsurprisingly, the person must be an op
 				// to do this, else anyone could murder the
