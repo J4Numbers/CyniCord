@@ -31,7 +31,7 @@ import uk.co.cynicode.CyniCord.CyniCord;
  * 
  * @author CyniCode
  */
-public class JSONDataGetter implements IDataGetter {
+public class JsonDataGetter implements IDataGetter {
 	
 	/**
 	 * The item which contains the mapping of the irc channels
@@ -59,7 +59,7 @@ public class JSONDataGetter implements IDataGetter {
 	 *  configs
 	 * @throws IOException if the PluginMessage goes awry
 	 */
-	public JSONDataGetter( CyniCord plugin ) throws IOException {
+	public JsonDataGetter(CyniCord plugin) throws IOException {
 		
 	}
 	

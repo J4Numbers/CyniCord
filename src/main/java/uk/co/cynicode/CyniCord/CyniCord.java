@@ -28,11 +28,11 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
+import uk.co.cynicode.CyniCord.DataGetters.JsonDataGetter;
+import uk.co.cynicode.CyniCord.DataGetters.MySqlDataGetter;
 import uk.co.cynicode.CyniCord.Listeners.PluginMessageListener;
 
 import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
-import uk.co.cynicode.CyniCord.DataGetters.JSONDataGetter;
-import uk.co.cynicode.CyniCord.DataGetters.MySQLDataGetter;
 
 /**
  * A plugin for interfacing with Bungee, CyniChat and IRC
@@ -85,7 +85,7 @@ public class CyniCord extends ConfigurablePlugin {
 	/**
 	 * The instance of the IRC bot we need to do all the IRC things
 	 */
-	public static IRCManager PBot = null;
+	public static IrcManager PBot = null;
 	
 	/**
 	 * Send a message using the IRC bot that we own
@@ -131,13 +131,13 @@ public class CyniCord extends ConfigurablePlugin {
 		//Get what method of data storage we're using
 		try {
 			if ( getConfig().getString( "CyniCord.other.storage" ).equalsIgnoreCase( "mysql" ) ) {
-				connection = new MySQLDataGetter( this );
+				connection = new MySqlDataGetter( this );
 				runner = this.getProxy().getScheduler()
 					.schedule(this, 
 						connection.returnBooster(), 
 						5, TimeUnit.MINUTES );
 			} else {
-				connection = new JSONDataGetter( this );
+				connection = new JsonDataGetter( this );
 			}
 			
 		} catch ( SQLException e ) {
@@ -157,7 +157,7 @@ public class CyniCord extends ConfigurablePlugin {
 		//And try to initialise the IRC bot, otherwise this thing is
 		// a pointless plugin.
 		try {
-			PBot = new IRCManager( this, connection );
+			PBot = new IrcManager( this, connection );
 		} catch ( Exception e ) {
 			e.printStackTrace();
 		}

@@ -34,7 +34,7 @@ import uk.co.cynicode.CyniCord.CyniCord;
  * 
  * @author CyniCode
  */
-public class MySQLDataGetter implements IDataGetter {
+public class MySqlDataGetter implements IDataGetter {
 	
 	/**
 	 * The String responsible for holding the hostname of the database
@@ -116,7 +116,7 @@ public class MySQLDataGetter implements IDataGetter {
 	 * @throws SQLException if the connection was unsuccessful
 	 * @throws Exception if something else went wrong
 	 */
-	public MySQLDataGetter( CyniCord plugin ) throws SQLException, Exception {
+	public MySqlDataGetter(CyniCord plugin) throws SQLException, Exception {
 		
 		//Set all the variables according to the configs
 		this.hostname = (plugin.getConfig().getString( "CyniCord.database.hostname" ));

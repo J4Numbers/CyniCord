@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import uk.co.cynicode.CyniCord.Listeners.IRCChatListener;
+import uk.co.cynicode.CyniCord.Listeners.IrcChatListener;
 import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
 
 import org.pircbotx.PircBotX;
@@ -32,7 +32,7 @@ import org.pircbotx.exception.NickAlreadyInUseException;
  *
  * @author CyniCode
  */
-public class IRCManager {
+public class IrcManager {
 	
 	private PircBotX bot;
 	
@@ -53,7 +53,7 @@ public class IRCManager {
 	 * @param connection : Used for connecting to all the channels
 	 * @throws Exception : So much that could go wrong here...
 	 */
-	public IRCManager(CyniCord plugin, IDataGetter connection ) throws Exception {
+	public IrcManager(CyniCord plugin, IDataGetter connection) throws Exception {
 		
 		//Get the information about the IRC server we're going to
 		// connect to
@@ -73,7 +73,7 @@ public class IRCManager {
 		Map<String, String> channels = connection.getLoadedChannels();
 		
 		//And then register the thing that will enable two-way chatter
-		this.bot.getListenerManager().addListener(new IRCChatListener());
+		this.bot.getListenerManager().addListener(new IrcChatListener());
 		
 		//Set the name to whatever has been chosen
 		this.bot.setName( this.nickname );
