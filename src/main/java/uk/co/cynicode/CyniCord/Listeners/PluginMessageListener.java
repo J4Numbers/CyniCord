@@ -105,7 +105,7 @@ public class PluginMessageListener implements Listener {
 			CyniCord.printDebug( "Subchannel: " + subChannel );
 			
 			//Check our own subchannel
-			if( !subChannel.equals("CyniChat") ) {
+			if( !subChannel.equals("CyniChat") && !subChannel.equals( "CyniCordReply" ) ) {
 				return;/*Not our problem*/
 			}
 			
@@ -131,7 +131,22 @@ public class PluginMessageListener implements Listener {
 			// the operation of this plugin
 			String one = dis.readUTF();
 			String two = dis.readUTF();
-			
+
+			if ( subChannel.equals( "CyniCordReply" ) ) {
+
+				CyniCord.printDebug( "CyniCord reply found..." );
+
+				String message = dis.readUTF();
+				String channel = dis.readUTF();
+
+				CyniCord.PBot.getBot().sendMessage( channel, message );
+
+				CyniCord.printDebug( String.format( "'%s' sent over '%s'", message, channel ) );
+
+				return;
+
+			}
+
 			//Get each and every part of the data that we'll have
 			// been sent from the CyniChat instances
 			//EndpointType type = EndpointType.values()[dis.readInt()];
@@ -139,6 +154,11 @@ public class PluginMessageListener implements Listener {
 			String playerName = dis.readUTF();
 			String chatChannel = dis.readUTF();
 			String IRCName = dis.readUTF();
+
+			//If there's no channel to send it to, there's
+			// no point in continuing any further.
+			if ( IRCName.equals( "" ) ) return;
+
 			String IRCPass = dis.readUTF();
 			String message = dis.readUTF();
 			
