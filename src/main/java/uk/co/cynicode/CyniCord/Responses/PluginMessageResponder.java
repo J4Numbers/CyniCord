@@ -62,8 +62,8 @@ public class PluginMessageResponder {
 					//Along with the channel name and the
 					// corresponding player to do something
 					// to
-					out.writeUTF( channel );
 					out.writeUTF( player );
+					out.writeUTF( channel );
 
 					//Then finally the channel (or user) to
 					// return the completed message to when

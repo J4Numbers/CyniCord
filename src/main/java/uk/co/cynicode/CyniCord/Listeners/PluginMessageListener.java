@@ -107,16 +107,33 @@ public class PluginMessageListener implements Listener {
 			//Check our own subchannel
 			if( !subChannel.equals("CyniChat") && !subChannel.equals( "CyniCordReply" ) ) {
 				return;/*Not our problem*/
-			}
+			}// else if ( subChannel.equals( "CyniCordReply" ) ) {
+			 //
+			 //	//Let's break things
+			 //	CyniCord.printDebug( "FIRST : " + in.readUTF() );
+			 //	CyniCord.printDebug( "SEC : " + in.readUTF() );
+			 //	CyniCord.printDebug( "THIRD : " + in.readUTF() );
+			 //	CyniCord.printDebug( "FOURTH : " + in.readUTF() );
+			 //	CyniCord.printDebug( "FIFTH : " + in.readUTF() );
+			 //
+			 //}
 			
 			//And then continue with the natural order
 			CyniCord.printDebug( "Next stage" );
 			
 			//Read in the basic information parts
 			short len = in.readShort();
+
+			CyniCord.printDebug( "Length : " + len );
+
 			byte[] msgbytes = new byte[len];
+
+			CyniCord.printDebug( "New : " + new String( msgbytes ) );
+
 			in.readFully(msgbytes);
-			
+
+			CyniCord.printDebug( "Assigned : " + new String( msgbytes ) );
+
 			//And debug again
 			CyniCord.printDebug( "We're still going..." );
 			
@@ -136,12 +153,13 @@ public class PluginMessageListener implements Listener {
 
 				CyniCord.printDebug( "CyniCord reply found..." );
 
-				String message = dis.readUTF();
-				String channel = dis.readUTF();
+				CyniCord.printDebug( "Message: " + one );
 
-				CyniCord.PBot.getBot().sendMessage( channel, message );
+				CyniCord.printDebug( "Channel: " + two );
 
-				CyniCord.printDebug( String.format( "'%s' sent over '%s'", message, channel ) );
+				CyniCord.PBot.getBot().sendMessage( two, one );
+
+				CyniCord.printDebug( String.format( "'%s' sent over '%s'", one, two ) );
 
 				return;
 

@@ -70,8 +70,12 @@ public class IrcResponses {
 		//And if it's just this channel we're checking...
 		if ( !all ) {
 
+			CyniCord.printDebug( channel );
+
 			//Let's get the channel that we're listing out
 			String listChan = CyniCord.PBot.getGameChannelNames().get( channel );
+
+			CyniCord.printDebug( listChan );
 
 			PluginMessageResponder.sendInstructionToServer( "list", user.getNick(), listChan, channel );
 

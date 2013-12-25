@@ -280,7 +280,7 @@ public class IrcManager {
 		CyniCord.printInfo("Shutting down IRC...");
 		
 		//With no chance of reconnection
-		getBot().shutdown(true);
+		getBot().shutdown( true );
 		
 		CyniCord.printInfo("IRC has been killed.");
 		

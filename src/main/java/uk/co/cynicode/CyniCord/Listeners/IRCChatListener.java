@@ -86,6 +86,7 @@ public class IrcChatListener extends ListenerAdapter {
 				// channel request or an all request
 				CyniCord.printDebug("Listing chosen...");
 				if (argments.length > 2) {
+
 					if (argments[2].equalsIgnoreCase("all")) {
 						
 						//The example of all being used here
@@ -189,7 +190,7 @@ public class IrcChatListener extends ListenerAdapter {
 			//Restart the CyniCord bot
 			if (argments[1].equalsIgnoreCase("restart")
 					&& thisChan.isOp( event.getUser() )
-					&& thisChan.getName().equalsIgnoreCase( CyniCord.PBot.getAdminChan() )) {
+					&& thisChan.getName().equalsIgnoreCase(CyniCord.PBot.getAdminChan())) {
 				
 				//The person must be an op to restart
 				// the IRC bot
