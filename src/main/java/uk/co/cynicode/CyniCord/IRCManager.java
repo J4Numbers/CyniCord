@@ -17,8 +17,8 @@
 package uk.co.cynicode.CyniCord;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import uk.co.cynicode.CyniCord.Listeners.IrcChatListener;
 import uk.co.cynicode.CyniCord.DataGetters.IDataGetter;
@@ -70,7 +70,8 @@ public class IrcManager {
 		//Make a new bot
 		this.bot = new PircBotX();
 		
-		Map<String, String> channels = connection.getLoadedChannels();
+		this.ircChannelNames = connection.getLoadedChannels();
+		this.gameChannelNames = connection.getCyniChannels();
 		
 		//And then register the thing that will enable two-way chatter
 		this.bot.getListenerManager().addListener(new IrcChatListener());
@@ -97,10 +98,10 @@ public class IrcManager {
 			this.bot.joinChannel(this.getAdminChan(), this.getAdminPass());
 
 			//Let's just see if the map is empty or not first.
-			if ( !channels.isEmpty() ) {
+			if ( !this.ircChannelNames.isEmpty() ) {
 				
 				//For every channel there is in the map...
-				for ( Map.Entry<String, String> thisChan : channels.entrySet() ) {
+				for ( Map.Entry<String, String> thisChan : this.ircChannelNames.entrySet() ) {
 					
 					//Lock the channel in and join it
 					this.bot.joinChannel( thisChan.getKey(), thisChan.getValue() );
@@ -124,42 +125,64 @@ public class IrcManager {
 	 * @param channels : A map of IRC channels and their keys
 	 */
 	public void compareChannels( Map<String, String> channels ) {
-		
+
+		CyniCord.printDebug( "Comparing channels called" );
+
 		//Firstly, let's get all the channels we're currently joined
 		// to with this bot.
-		List<String> currentChannels = (List<String>) getIrcChannelNames().keySet();
-		
+		Set<String> currentChannels = getIrcChannelNames().keySet();
+
+		CyniCord.printDebug( "Previous list gathered" );
+
 		//Then let's get a list of all the channels that are
 		// in the map we've been handed
-		List<String> currentNewChannels = (List<String>) channels.keySet();
-		
+		Set<String> currentNewChannels = channels.keySet();
+
+		CyniCord.printDebug( "New list gathered" );
+
 		//Let's just make sure that there are channels to be added to
 		if ( currentChannels.isEmpty() && currentNewChannels.isEmpty() )
 			return;
-		
+
+		CyniCord.printDebug( "No list is empty" );
+
 		//Now... for every potentially new channel...
-		for ( String thisChan : currentNewChannels )
-			
+		for ( String thisChan : currentNewChannels ) {
+
+			CyniCord.printDebug( String.format( "%s is being checked", thisChan ) );
+
 			//If we're already joined to it...
 			if ( currentChannels.contains( thisChan ) ) {
-				
+
+				CyniCord.printDebug( String.format("%s duplicated", thisChan) );
+
 				//Then strike it from both records
 				currentChannels.remove( thisChan );
 				channels.remove( thisChan );
-				
+
+				CyniCord.printDebug( "Removed" );
+
 			}
+
+		}
 		
 		//Now, every record in this list is a channel that is
 		// no-longer in the records, meaning that it's not 
 		// needed anymore. Leave all such channels
-		for ( String thisChan : currentChannels ) 
-			leaveChannel( thisChan );
+		for ( String thisChan : currentChannels )  {
+			CyniCord.printDebug( String.format("Leaving %s", thisChan) );
+
+			leaveChannel(thisChan);
+		}
 		
 		//The opposite is true for the new channels. These are
 		// now channels that are not in our list of joined 
 		// channels yet. Rectify that by joining them.
-		for ( Map.Entry<String, String> thisChan : channels.entrySet() )
-			joinChannel( thisChan.getKey(), thisChan.getValue() );
+		for ( Map.Entry<String, String> thisChan : channels.entrySet() ) {
+			CyniCord.printDebug( String.format("Joining %s", thisChan) );
+
+			joinChannel(thisChan.getKey(), thisChan.getValue());
+		}
 		
 	}
 	

@@ -58,5 +58,11 @@ public interface IDataGetter {
 	 * @return the loaded channels
 	 */
 	public Map<String, String> getLoadedChannels();
+
+	/**
+	 * Get all the game channels mapped to irc
+	 * @return that
+	 */
+	public Map<String, String> getCyniChannels();
 	
 }

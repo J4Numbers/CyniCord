@@ -135,7 +135,7 @@ public class CyniCord extends ConfigurablePlugin {
 				runner = this.getProxy().getScheduler()
 					.schedule(this, 
 						connection.returnBooster(), 
-						5, TimeUnit.MINUTES );
+						5, 5, TimeUnit.MINUTES );
 			} else {
 				connection = new JsonDataGetter( this );
 			}

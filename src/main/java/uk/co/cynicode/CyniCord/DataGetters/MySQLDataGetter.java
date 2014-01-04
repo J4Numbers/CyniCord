@@ -192,7 +192,7 @@ public class MySqlDataGetter implements IDataGetter {
 	public void endConnection() {
 		
 		//If the connection is there...
-		if ( isSQL() == true ) {
+		if ( isSQL() ) {
 			
 			//Then kill it
 			try {
@@ -215,7 +215,9 @@ public class MySqlDataGetter implements IDataGetter {
 	 * @throws SQLException if there was a failure
 	 */
 	public final void findAllChannels() throws Exception {
-		
+
+		CyniCord.printDebug("Finding all the channels called");
+
 		//Make some dummy maps to hold all the information we find in
 		// this check of the database.
 		Map<String, String> loadMap = new HashMap<String, String>();
@@ -232,9 +234,13 @@ public class MySqlDataGetter implements IDataGetter {
 					+ "`channel_irc_pass` "
 					+ "FROM `%schannels`", 
 					getPrefix() ) );
-			
+
+			CyniCord.printDebug("Statement made...");
+
 			//Then executing it
 			ResultSet rs = ps.executeQuery();
+
+			CyniCord.printDebug("Statement executed");
 			
 			//And reading everything from the result set
 			while ( rs.next() ) {
@@ -245,7 +251,9 @@ public class MySqlDataGetter implements IDataGetter {
 				String name = rs.getString(1);
 				String irc = rs.getString(2);
 				String ircPass = rs.getString(3);
-				
+
+				CyniCord.printDebug( String.format("%s channel found", name));
+
 				//And try to put them all into the map in some
 				// shape or form.
 				try {
@@ -260,7 +268,9 @@ public class MySqlDataGetter implements IDataGetter {
 					
 					//Then we want to reverse that map we just made
 					ircMap.put( irc, name.toLowerCase() );
-					
+
+					CyniCord.printDebug( String.format( "%s mapped", name ) );
+
 				} catch (NullPointerException e) {
 					
 					//Then there might be a glitch...
@@ -271,6 +281,8 @@ public class MySqlDataGetter implements IDataGetter {
 				}
 				
 			}
+
+			CyniCord.printDebug( "All channels mapped" );
 			
 		} catch (SQLException e) {
 			
@@ -310,12 +322,16 @@ public class MySqlDataGetter implements IDataGetter {
 		 */
 		public void run() {
 			try {
-				
+
+				CyniCord.printDebug("Boosting the connection again...");
+
 				//Now, do another run on getting all the channels
 				// from the database which should have been
 				// flushed by the CyniChat plugin
 				findAllChannels();
-				
+
+				CyniCord.printDebug("All channels loaded and found");
+
 				//Once we've done that, compare all the old channels
 				// with the new ones that we've just found.
 				CyniCord.PBot
@@ -335,7 +351,7 @@ public class MySqlDataGetter implements IDataGetter {
 			}
 		}
 		
-	};
+	}
 	
 	/**
 	 * @return the hostname

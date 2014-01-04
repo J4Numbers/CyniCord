@@ -252,7 +252,8 @@ public class IrcChatListener extends ListenerAdapter {
 					//Create the streams
 					ByteArrayOutputStream b = new ByteArrayOutputStream();
 					DataOutputStream out = new DataOutputStream(b);
-					
+					out.writeInt(0);// typeId
+
 					//Now write nothing to the stream for
 					// some reason which only debugging
 					// shall reveal.
@@ -282,7 +283,7 @@ public class IrcChatListener extends ListenerAdapter {
 					// Just the subchannel
 					//  msg.writeUTF("Forward");
 					//  msg.writeUTF("ALL");
-					msg.writeUTF("CyniCord");
+					msg.writeUTF("CyniChat");
 					
 					//Push message content
 					msg.writeShort(b.toByteArray().length);
